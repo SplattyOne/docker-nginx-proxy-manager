@@ -200,6 +200,7 @@ RUN \
         build-base \
         python3-dev \
         musl-dev \
+        linux-headers \
         libffi-dev \
         openssl-dev \
         cargo \
