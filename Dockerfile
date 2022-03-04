@@ -199,6 +199,7 @@ RUN \
     add-pkg --virtual build-dependencies \
         build-base \
         python3-dev \
+        musl-dev \
         libffi-dev \
         openssl-dev \
         cargo \
