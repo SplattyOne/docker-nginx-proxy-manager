@@ -214,7 +214,9 @@ RUN \
     #       https://pip.pypa.io/en/stable/development/vendoring-policy/
     curl -# -L "https://bootstrap.pypa.io/get-pip.py" | python3 && \
     # Then install certbot.
-    CARGO_HOME=/tmp/.cargo pip install --no-cache-dir --prefix=/usr certbot && \
+    pip3 install --upgrade --no-cache-dir pip && \
+    pip3 install --upgrade --no-cache-dir setuptools && \
+    CARGO_HOME=/tmp/.cargo pip3 install --no-cache-dir --prefix=/usr certbot==1.21.0 && \
     find /usr/lib/python3.9/site-packages -type f -name "*.so" -exec strip {} ';' && \
     find /usr/lib/python3.9/site-packages -type f -name "*.h" -delete && \
     find /usr/lib/python3.9/site-packages -type f -name "*.c" -delete && \
