@@ -14,13 +14,15 @@ ARG DOCKER_IMAGE_VERSION=unknown
 ARG OPENRESTY_VERSION=1.19.9.1
 ARG NGINX_PROXY_MANAGER_VERSION=2.9.16
 ARG NGINX_HTTP_GEOIP2_MODULE_VERSION=3.3
+ARG NGX_HTTP_PROXY_CONNECT_MODULE_VERSION=0.0.2
 ARG LIBMAXMINDDB_VERSION=1.5.0
 ARG WATCH_VERSION=0.3.1
 
 # Define software download URLs.
 ARG OPENRESTY_URL=https://openresty.org/download/openresty-${OPENRESTY_VERSION}.tar.gz
 ARG NGINX_PROXY_MANAGER_URL=https://github.com/jc21/nginx-proxy-manager/archive/v${NGINX_PROXY_MANAGER_VERSION}.tar.gz
-ARG NGINX_HTTP_GEOIP2_MODULE_URL=https://github.com/leev/ngx_http_geoip2_module/archive/${NGINX_HTTP_GEOIP2_MODULE_VERSION}.tar.gz
+ARG NGINX_HTTP_GEOIP2_MODULE_URL=https://github.com/chobits/ngx_http_proxy_connect_module/archive/refs/tags/v${NGX_HTTP_PROXY_CONNECT_MODULE_VERSION}.tar.gz
+ARG NGX_HTTP_PROXY_CONNECT_MODULE_URL=https://github.com/leev/ngx_http_geoip2_module/archive/${NGINX_HTTP_GEOIP2_MODULE_VERSION}.tar.gz
 ARG LIBMAXMINDDB_URL=https://github.com/maxmind/libmaxminddb/releases/download/${LIBMAXMINDDB_VERSION}/libmaxminddb-${LIBMAXMINDDB_VERSION}.tar.gz
 ARG WATCH_URL=https://github.com/tj/watch/archive/${WATCH_VERSION}.tar.gz
 
@@ -77,6 +79,9 @@ RUN \
     echo "Downloading GeoIP2 module..." && \
     mkdir ngx_http_geoip2_module && \
     curl -# -L ${NGINX_HTTP_GEOIP2_MODULE_URL} | tar xz --strip 1 -C ngx_http_geoip2_module && \
+    echo "Downloading Connect module..." && \
+    mkdir ngx_http_proxy_connect_module && \
+    curl -# -L ${NGX_HTTP_PROXY_CONNECT_MODULE_URL} | tar xz --strip 1 -C ngx_http_proxy_connect_module && \
     echo "Downloading libmaxminddb..." && \
     mkdir libmaxminddb && \
     curl -# -L ${LIBMAXMINDDB_URL} | tar xz --strip 1 -C libmaxminddb && \
@@ -139,6 +144,7 @@ RUN \
         --with-pcre-jit \
         \
         --add-module=/tmp/ngx_http_geoip2_module \
+        --add-module=/tmp/ngx_http_proxy_connect_module \
         && \
     make -j$(nproc) && \
     # Install.
